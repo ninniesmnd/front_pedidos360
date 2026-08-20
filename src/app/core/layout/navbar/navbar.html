@@ -1,0 +1,31 @@
+<header class="navbar">
+  <div class="contenedor navbar__interior">
+    <a routerLink="/" class="navbar__logo">
+      <span class="navbar__logo-texto">Pedidos</span>
+      <span class="navbar__logo-acento">360</span>
+    </a>
+
+    <nav class="navbar__enlaces" [class.navbar__enlaces--abierto]="menuAbierto()">
+      <a href="#" class="navbar__enlace">Productos</a>
+      <a href="#" class="navbar__enlace">Pedidos</a>
+      <a href="#" class="navbar__enlace">Soporte</a>
+    </nav>
+
+    <div class="navbar__acciones">
+      <a routerLink="/login" class="boton boton--secundario navbar__accion-desktop">Iniciar sesión</a>
+      <a href="#" class="boton boton--primario navbar__accion-desktop">Registrar</a>
+
+      <button
+        type="button"
+        class="navbar__hamburguesa"
+        (click)="alternarMenu()"
+        [attr.aria-expanded]="menuAbierto()"
+        aria-label="Abrir menú de navegación"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </div>
+</header>

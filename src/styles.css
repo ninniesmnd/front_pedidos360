@@ -1,1 +1,193 @@
-/* You can add global styles to this file, and also import other style files */
+/* ==========================================================================
+   Pedidos 360 — Estilos globales y tokens de marca
+   ========================================================================== */
+
+:root {
+  /* --- Color --- */
+  --color-burdeos: #5c1a2b;
+  --color-burdeos-oscuro: #451322;
+  --color-dorado: #c89b3c;
+  --color-dorado-suave: #e3c988;
+  --color-crema: #faf4ea;
+  --color-crema-oscura: #f0e4d3;
+  --color-blanco: #ffffff;
+  --color-texto: #2b1a14;
+  --color-texto-suave: #6b5b52;
+  --color-borde: #e4d7c4;
+
+  /* Estados del sistema (auditoría / pedidos) */
+  --color-estado-ok: #3f6c4c;
+  --color-estado-alerta: #b6552c;
+
+  /* --- Tipografía --- */
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* Escala tipográfica */
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.875rem;
+  --fs-base: 1rem;
+  --fs-lg: 1.25rem;
+  --fs-xl: 1.75rem;
+  --fs-2xl: 2.5rem;
+  --fs-3xl: 3.5rem;
+
+  /* --- Espaciado --- */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2.5rem;
+  --space-xl: 4rem;
+  --space-2xl: 6rem;
+
+  /* --- Layout --- */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --max-width: 1240px;
+
+  /* --- Sombra --- */
+  --shadow-card: 0 4px 20px rgba(43, 26, 20, 0.08);
+}
+
+/* --- Reset básico --- */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--fs-base);
+  color: var(--color-texto);
+  background-color: var(--color-crema);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  color: var(--color-texto);
+  margin: 0;
+  line-height: 1.15;
+  font-weight: 600;
+}
+
+p {
+  margin: 0;
+  color: var(--color-texto-suave);
+  line-height: 1.6;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul, ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* --- Utilidades compartidas --- */
+.contenedor {
+  width: 100%;
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-inline: var(--space-md);
+}
+
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  padding: 0.75rem 1.75rem;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: var(--fs-sm);
+  border: 1px solid transparent;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.boton--primario {
+  background-color: var(--color-burdeos);
+  color: var(--color-blanco);
+}
+
+.boton--primario:hover {
+  background-color: var(--color-burdeos-oscuro);
+}
+
+.boton--secundario {
+  background-color: transparent;
+  color: var(--color-burdeos);
+  border-color: var(--color-burdeos);
+}
+
+.boton--secundario:hover {
+  background-color: var(--color-burdeos);
+  color: var(--color-blanco);
+}
+
+/* Elemento de firma: borde tipo "ticket perforado" para tarjetas clave */
+.ticket-borde {
+  position: relative;
+  border-radius: var(--radius-md);
+  background-color: var(--color-blanco);
+  box-shadow: var(--shadow-card);
+}
+
+.ticket-borde::before,
+.ticket-borde::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 16px;
+  height: 16px;
+  background-color: var(--color-crema);
+  border-radius: 50%;
+  transform: translateY(-50%);
+}
+
+.ticket-borde::before {
+  left: -8px;
+}
+
+.ticket-borde::after {
+  right: -8px;
+}
+
+/* Foco visible para accesibilidad de teclado */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--color-dorado);
+  outline-offset: 2px;
+}

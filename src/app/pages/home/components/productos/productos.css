@@ -1,0 +1,23 @@
+.productos {
+  width: 100%;
+  line-height: 0;
+}
+
+.productos__imagen {
+  width: 100%;
+  height: 480px;
+  object-fit: cover;
+  object-position: center;
+}
+
+@media (max-width: 860px) {
+  .productos__imagen {
+    height: 340px;
+  }
+}
+
+@media (max-width: 480px) {
+  .productos__imagen {
+    height: 260px;
+  }
+}

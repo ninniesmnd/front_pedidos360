@@ -1,0 +1,115 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: var(--color-crema);
+  border-bottom: 1px solid var(--color-borde);
+}
+
+.navbar__interior {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 76px;
+}
+
+/* --- Logo --- */
+.navbar__logo {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  color: var(--color-burdeos);
+}
+
+.navbar__logo-acento {
+  color: var(--color-dorado);
+}
+
+/* --- Enlaces --- */
+.navbar__enlaces {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+.navbar__enlace {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--color-texto);
+  transition: color 0.2s ease;
+}
+
+.navbar__enlace:hover {
+  color: var(--color-burdeos);
+}
+
+/* --- Acciones (derecha) --- */
+.navbar__acciones {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.navbar__accion-desktop {
+  padding: 0.6rem 1.25rem;
+}
+
+/* --- Botón hamburguesa (oculto en desktop) --- */
+.navbar__hamburguesa {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.navbar__hamburguesa span {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background-color: var(--color-burdeos);
+  border-radius: 2px;
+}
+
+/* --- Responsive --- */
+@media (max-width: 860px) {
+  .navbar__enlaces {
+    position: absolute;
+    top: 76px;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    background-color: var(--color-crema);
+    border-bottom: 1px solid var(--color-borde);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.25s ease;
+  }
+
+  .navbar__enlaces--abierto {
+    max-height: 300px;
+  }
+
+  .navbar__enlace {
+    width: 100%;
+    padding: var(--space-sm) var(--space-md);
+    border-bottom: 1px solid var(--color-borde);
+  }
+
+  .navbar__accion-desktop {
+    display: none;
+  }
+
+  .navbar__hamburguesa {
+    display: flex;
+  }
+}
