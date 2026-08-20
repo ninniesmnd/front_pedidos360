@@ -1,0 +1,73 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  padding: var(--space-lg);
+  background-color: var(--color-blanco);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radius-md);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card);
+}
+
+/* --- Ícono --- */
+.card__icono {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-crema-oscura);
+}
+
+.card__icono-marca {
+  width: 22px;
+  height: 22px;
+  background-color: var(--color-burdeos);
+  border-radius: 4px;
+}
+
+/* --- Texto --- */
+.card__titulo {
+  font-size: var(--fs-lg);
+  font-weight: 600;
+}
+
+.card__descripcion {
+  font-size: var(--fs-sm);
+  color: var(--color-texto-suave);
+}
+
+/* --- Variante "ticket": borde perforado tipo recibo --- */
+.card--ticket {
+  position: relative;
+  border-style: dashed;
+  border-color: var(--color-dorado);
+}
+
+.card--ticket::before,
+.card--ticket::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  background-color: var(--color-crema);
+  border: 1px solid var(--color-dorado);
+  border-radius: 50%;
+  transform: translateY(-50%);
+}
+
+.card--ticket::before {
+  left: -8px;
+}
+
+.card--ticket::after {
+  right: -8px;
+}

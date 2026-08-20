@@ -1,0 +1,10 @@
+<article class="card" [class.card--ticket]="variante() === 'ticket'">
+  @if (icono()) {
+    <div class="card__icono">
+      <span class="card__icono-marca"></span>
+    </div>
+  }
+
+  <h3 class="card__titulo">{{ titulo() }}</h3>
+  <p class="card__descripcion">{{ descripcion() }}</p>
+</article>

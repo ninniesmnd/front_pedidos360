@@ -1,0 +1,48 @@
+<section class="login">
+  <div class="login__panel ticket-borde">
+    <div class="login__encabezado">
+      <span class="login__logo">
+        <span class="login__logo-texto">Pedidos</span>
+        <span class="login__logo-acento">360</span>
+      </span>
+      <h1 class="login__titulo">Inicia sesión</h1>
+      
+    </div>
+
+    <div class="login__campo">
+      <label class="login__etiqueta" for="correo">Correo electrónico</label>
+      <input
+        #correoInput
+        id="correo"
+        type="email"
+        class="login__input"
+        placeholder="nombre@correo.cl"
+        [value]="correo()"
+        (input)="onCorreoChange(correoInput.value)"
+      />
+    </div>
+
+    <div class="login__campo">
+      <label class="login__etiqueta" for="clave">Contraseña</label>
+      <input
+        #claveInput
+        id="clave"
+        type="password"
+        class="login__input"
+        placeholder="••••••••"
+        [value]="clave()"
+        (input)="onClaveChange(claveInput.value)"
+      />
+    </div>
+
+    <button
+      type="button"
+      class="boton boton--primario login__boton"
+      [disabled]="cargando()"
+      (click)="enviar()"
+    >
+      {{ cargando() ? 'Ingresando...' : 'Iniciar sesión' }}
+    </button>
+
+  </div>
+</section>
