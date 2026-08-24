@@ -98,3 +98,35 @@
   text-align: center;
   margin-top: var(--space-xs);
 }   
+
+/* --- Separador --- */
+.login__separador {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-block: var(--space-xs);
+  color: var(--color-texto-suave);
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.login__separador::before,
+.login__separador::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background-color: var(--color-borde);
+}
+
+/* --- Botón Microsoft --- */
+.login__boton-microsoft {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+}
+
+.login__icono-ms {
+  flex-shrink: 0;
+}
