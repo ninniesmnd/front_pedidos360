@@ -12,8 +12,18 @@
     </nav>
 
     <div class="navbar__acciones">
-      <a routerLink="/login" class="boton boton--secundario navbar__accion-desktop">Iniciar sesión</a>
-      <a href="#" class="boton boton--primario navbar__accion-desktop">Registrar</a>
+      @if (estaAutenticado()) {
+        <button
+          type="button"
+          class="boton boton--secundario navbar__accion-desktop"
+          (click)="cerrarSesion()"
+        >
+          Cerrar sesión
+        </button>
+      } @else {
+        <a routerLink="/login" class="boton boton--secundario navbar__accion-desktop">Iniciar sesión</a>
+        <a href="#" class="boton boton--primario navbar__accion-desktop">Registrar</a>
+      }
 
       <button
         type="button"
