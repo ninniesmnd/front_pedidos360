@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { MsalService } from '@azure/msal-angular';
 import { Navbar } from './core/layout/navbar/navbar';
 import { Footer } from './core/layout/footer/footer';
 
@@ -9,4 +10,10 @@ import { Footer } from './core/layout/footer/footer';
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
-export class App {}
+export class App implements OnInit {
+  private readonly msalService = inject(MsalService);
+
+  ngOnInit(): void {
+    this.msalService.handleRedirectObservable().subscribe();
+  }
+}

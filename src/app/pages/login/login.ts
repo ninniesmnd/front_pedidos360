@@ -1,4 +1,6 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { MsalService } from '@azure/msal-angular';
 
 @Component({
   selector: 'app-login',
@@ -7,6 +9,9 @@ import { Component, signal } from '@angular/core';
   styleUrl: './login.css'
 })
 export class Login {
+  private readonly msalService = inject(MsalService);
+  private readonly router = inject(Router);
+
   protected readonly correo = signal('');
   protected readonly clave = signal('');
   protected readonly cargando = signal(false);
@@ -22,9 +27,16 @@ export class Login {
   protected enviar(): void {
     this.cargando.set(true);
 
-    // TODO: reemplazar por la autenticación real con Azure AD (MSAL) en la próxima clase.
+    // TODO: formulario de referencia — el login real es loginConMicrosoft().
     console.log('Login (placeholder):', this.correo(), this.clave());
 
     setTimeout(() => this.cargando.set(false), 800);
+  }
+
+  protected loginConMicrosoft(): void {
+    this.msalService.loginRedirect({
+      scopes: ['user.read'],
+      redirectStartPage: '/dashboard'
+    });
   }
 }
