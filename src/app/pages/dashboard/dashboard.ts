@@ -1,4 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
+import { InteractionStatus } from '@azure/msal-browser';
+import { filter, map } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,6 +11,18 @@ import { Component, signal } from '@angular/core';
   styleUrl: './dashboard.css'
 })
 export class Dashboard {
-  // TODO: reemplazar por el nombre real que entrega MSAL una vez conectado.
-  protected readonly nombreUsuario = signal('Usuario');
+  private readonly msalService = inject(MsalService);
+  private readonly msalBroadcastService = inject(MsalBroadcastService);
+
+  protected readonly nombreUsuario = toSignal(
+    this.msalBroadcastService.inProgress$.pipe(
+      filter((estado) => estado === InteractionStatus.None),
+      map(() => {
+        const cuenta = this.msalService.instance.getActiveAccount()
+          ?? this.msalService.instance.getAllAccounts()[0];
+        return cuenta?.name ?? cuenta?.username ?? 'Usuario';
+      })
+    ),
+    { initialValue: 'Usuario' }
+  );
 }
