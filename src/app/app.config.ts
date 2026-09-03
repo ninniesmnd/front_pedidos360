@@ -38,15 +38,14 @@ function MSALGuardConfigFactory(): MsalGuardConfiguration {
   return {
     interactionType: InteractionType.Redirect,
     authRequest: {
-      scopes: ['user.read']
+      scopes: [...environment.msal.apiScopes, 'user.read']
     }
   };
 }
 
 function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
-  // agregar acá
-  // la URL de los microservicios para que el interceptor adjunte el JWT automáticamente.
   const protectedResourceMap = new Map<string, Array<string>>();
+  protectedResourceMap.set(`${environment.apiBaseUrl}/api/*`, environment.msal.apiScopes);
 
   return {
     interactionType: InteractionType.Redirect,
