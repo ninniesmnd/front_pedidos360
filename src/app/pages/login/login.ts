@@ -1,6 +1,7 @@
 import { Component, signal, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { MsalService } from '@azure/msal-angular';
+import { environment } from '../../../enviroments/enviroment';
 
 @Component({
   selector: 'app-login',
@@ -35,7 +36,7 @@ export class Login {
 
   protected loginConMicrosoft(): void {
     this.msalService.loginRedirect({
-      scopes: ['user.read'],
+      scopes: [...environment.msal.apiScopes, 'user.read'],
       redirectStartPage: '/dashboard'
     });
   }

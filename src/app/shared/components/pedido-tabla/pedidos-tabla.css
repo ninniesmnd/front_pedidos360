@@ -1,0 +1,11 @@
+.pedidos-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.pedidos-table th,
+.pedidos-table td {
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
