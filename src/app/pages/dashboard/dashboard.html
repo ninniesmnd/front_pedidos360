@@ -1,12 +1,10 @@
 <section class="dashboard">
   <div class="dashboard__panel ticket-borde">
-    <span class="dashboard__eyebrow">Sesión iniciada</span>
-    <h1 class="dashboard__titulo">Bienvenido, {{ nombreUsuario() }}</h1>
-
+    <h1 class="dashboard__titulo">Pedidos</h1>
     @if (error()) {
       <p style="color: red">{{ error() }}</p>
     } @else {
-      <p>Pedidos encontrados: {{ pedidos().length }}</p>
+      <app-pedidos-tabla [pedidos]="pedidos()" />
     }
   </div>
 </section>

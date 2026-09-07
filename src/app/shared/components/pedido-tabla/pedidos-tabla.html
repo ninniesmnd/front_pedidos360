@@ -1,0 +1,24 @@
+<table class="pedidos-tabla">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Estado</th>
+      <th>Despacho</th>
+      <th>Local</th>
+      <th>Fecha</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (p of pedidos(); track p.id) {
+      <tr>
+        <td>{{ p.id }}</td>
+        <td>{{ p.estado }}</td>
+        <td>{{ p.tipoDespacho }}</td>
+        <td>{{ p.localId }}</td>
+        <td>{{ p.fechaCreacion }}</td>
+      </tr>
+    } @empty {
+      <tr><td colspan="5">No hay pedidos.</td></tr>
+    }
+  </tbody>
+</table>
