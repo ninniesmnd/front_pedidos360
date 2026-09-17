@@ -1,0 +1,112 @@
+<!-- Cabecera de página, estilo "page header" -->
+<section class="cabecera">
+  <div class="contenedor cabecera__interior">
+    <h1 class="cabecera__titulo">Sobre nosotros</h1>
+    <p class="cabecera__ruta">
+      <a routerLink="/">Inicio</a>
+      <span>/</span>
+      <span>Sobre nosotros</span>
+    </p>
+  </div>
+</section>
+
+<!-- Historia / imagen / misión -->
+<section class="historia">
+  <div class="contenedor historia__grilla">
+    <div class="historia__columna">
+      <h2 class="historia__subtitulo">Nuestra historia</h2>
+      <p class="historia__texto">
+        Pedidos 360 nació junto a la Asociación de panaderías y cafeterías
+        para reemplazar las planillas y los grupos de WhatsApp por un
+        sistema único donde cada local puede tomar, seguir y cerrar sus
+        pedidos sin perder tiempo ni información en el camino.
+      </p>
+      <p class="historia__texto">
+        Empezamos trabajando con un puñado de locales asociados y hoy la
+        plataforma conecta a toda la red, entregando trazabilidad completa
+        desde que se recibe un pedido hasta que se entrega.
+      </p>
+    </div>
+
+    <div class="historia__imagen-envoltorio">
+      <img
+        class="historia__imagen"
+        src="images/sobre-nosotros.jpg"
+        alt="Equipo de Pedidos 360 preparando pedidos en panadería"
+      />
+    </div>
+
+    <div class="historia__columna">
+      <h2 class="historia__subtitulo">Nuestra misión</h2>
+      <p class="historia__texto">
+        Darle a cada panadería y cafetería asociada más control sobre su
+        operación diaria: pedidos claros, estados en tiempo real y datos
+        confiables para tomar mejores decisiones.
+      </p>
+      <ul class="historia__lista">
+        <li class="historia__item">
+          <span class="historia__marca" aria-hidden="true"></span>
+          Un solo sistema para todos los locales asociados
+        </li>
+        <li class="historia__item">
+          <span class="historia__marca" aria-hidden="true"></span>
+          Seguimiento de pedidos de principio a fin
+        </li>
+        <li class="historia__item">
+          <span class="historia__marca" aria-hidden="true"></span>
+          Soporte cercano de la Asociación
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- Valores -->
+<section class="valores">
+  <div class="contenedor">
+    <div class="valores__encabezado">
+      <p class="valores__etiqueta">Lo que nos guía</p>
+      <h2 class="valores__titulo">Nuestros valores</h2>
+    </div>
+
+    <div class="valores__grilla">
+      <article class="valores__tarjeta">
+        <div class="valores__icono"><span class="valores__icono-marca"></span></div>
+        <h3 class="valores__nombre">Cercanía</h3>
+        <p class="valores__descripcion">
+          Construimos la plataforma escuchando a cada panadería y cafetería
+          de la red, no al revés.
+        </p>
+      </article>
+
+      <article class="valores__tarjeta">
+        <div class="valores__icono"><span class="valores__icono-marca"></span></div>
+        <h3 class="valores__nombre">Transparencia</h3>
+        <p class="valores__descripcion">
+          Cada pedido y cada estado quedan a la vista, sin planillas
+          paralelas ni información perdida.
+        </p>
+      </article>
+
+      <article class="valores__tarjeta">
+        <div class="valores__icono"><span class="valores__icono-marca"></span></div>
+        <h3 class="valores__nombre">Simpleza</h3>
+        <p class="valores__descripcion">
+          Un sistema fácil de usar en el día a día, pensado para el ritmo
+          de una panadería, no de una oficina.
+        </p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- Llamado a la acción -->
+<section class="cta">
+  <div class="contenedor cta__interior">
+    <h2 class="cta__titulo">¿Tu local todavía no está en la red?</h2>
+    <p class="cta__texto">
+      Súmate a Pedidos 360 y empieza a gestionar tus pedidos desde un solo lugar.
+    </p>
+    <a routerLink="/login" class="boton boton--primario">Iniciar sesión</a>
+  </div>
+</section>
