@@ -1,24 +1,56 @@
-<table class="pedidos-tabla">
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>Estado</th>
-      <th>Despacho</th>
-      <th>Local</th>
-      <th>Fecha</th>
-    </tr>
-  </thead>
-  <tbody>
+<div class="pedidos-lista">
+  <div class="pedidos-lista__encabezado">
+    <span>Pedido</span>
+    <span>Cliente</span>
+    <span>Entrega</span>
+    <span>Picking</span>
+    <span>Total</span>
+    <span>Estado</span>
+  </div>
+
+  @if (cargando()) {
+    <p class="pedidos-lista__mensaje">Cargando pedidos…</p>
+  } @else if (pedidos().length === 0) {
+    <p class="pedidos-lista__mensaje">No hay pedidos.</p>
+  } @else {
     @for (p of pedidos(); track p.id) {
-      <tr>
-        <td>{{ p.id }}</td>
-        <td>{{ p.estado }}</td>
-        <td>{{ p.tipoDespacho }}</td>
-        <td>{{ p.localId }}</td>
-        <td>{{ p.fechaCreacion }}</td>
-      </tr>
-    } @empty {
-      <tr><td colspan="5">No hay pedidos.</td></tr>
+      <article class="pedidos-lista__fila">
+        <div class="pedidos-lista__celda pedidos-lista__id">
+          <p class="pedidos-lista__id-numero">Pedido #{{ p.id }}</p>
+          <p class="pedidos-lista__meta">{{ p.fechaCreacion | date: 'dd/MM/yyyy HH:mm' }}</p>
+          <p class="pedidos-lista__meta">Local {{ p.localId }}</p>
+        </div>
+
+        <div class="pedidos-lista__celda pedidos-lista__cliente">
+          <span class="pedidos-lista__avatar" aria-hidden="true"></span>
+          <div>
+            <span class="pedidos-lista__etiqueta-movil">Cliente</span>
+            <p class="pedidos-lista__cliente-email">{{ p.clienteEmail }}</p>
+          </div>
+        </div>
+
+        <div class="pedidos-lista__celda pedidos-lista__entrega">
+          <span class="pedidos-lista__etiqueta-movil">Entrega</span>
+          <p class="pedidos-lista__entrega-tipo">{{ p.tipoDespacho }}</p>
+          <p class="pedidos-lista__meta">Actualizado {{ p.fechaActualizacion | date: 'dd/MM/yyyy HH:mm' }}</p>
+        </div>
+
+        <div class="pedidos-lista__celda pedidos-lista__picking">
+          <span class="pedidos-lista__etiqueta-movil">Picking</span>
+          <p>{{ p.items.length }} producto{{ p.items.length === 1 ? '' : 's' }}</p>
+          <p class="pedidos-lista__meta">{{ cantidadItems(p) }} ítems</p>
+        </div>
+
+        <div class="pedidos-lista__celda pedidos-lista__total">
+          <span class="pedidos-lista__etiqueta-movil">Total</span>
+          <p>$ {{ totalPedido(p) | number: '1.0-2' }}</p>
+        </div>
+
+        <div class="pedidos-lista__celda pedidos-lista__estado">
+          <span class="pedidos-lista__etiqueta-movil">Estado</span>
+          <span class="pedidos-lista__badge" [class]="claseEstado(p.estado)">{{ p.estado }}</span>
+        </div>
+      </article>
     }
-  </tbody>
-</table>
+  }
+</div>

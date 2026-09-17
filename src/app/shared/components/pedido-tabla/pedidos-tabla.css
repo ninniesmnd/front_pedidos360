@@ -1,11 +1,151 @@
-.pedidos-table {
-  width: 100%;
-  border-collapse: collapse;
+:host {
+  display: block;
 }
 
-.pedidos-table th,
-.pedidos-table td {
-  padding: 0.5rem 0.75rem;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
+.pedidos-lista {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background-color: var(--color-blanco);
+}
+
+/* --- Encabezado (solo desktop) --- */
+.pedidos-lista__encabezado {
+  display: grid;
+  grid-template-columns: 1.4fr 1.6fr 1.4fr 1fr 1fr 1fr;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--color-crema-oscura);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-texto-suave);
+}
+
+.pedidos-lista__mensaje {
+  padding: var(--space-lg);
+  text-align: center;
+  color: var(--color-texto-suave);
+}
+
+/* --- Fila --- */
+.pedidos-lista__fila {
+  display: grid;
+  grid-template-columns: 1.4fr 1.6fr 1.4fr 1fr 1fr 1fr;
+  gap: var(--space-sm);
+  align-items: center;
+  padding: var(--space-md);
+  border-top: 1px solid var(--color-borde);
+  transition: background-color 0.15s ease;
+}
+
+.pedidos-lista__fila:hover {
+  background-color: var(--color-crema);
+}
+
+.pedidos-lista__celda {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  font-size: var(--fs-sm);
+  color: var(--color-texto);
+  min-width: 0;
+}
+
+.pedidos-lista__id-numero {
+  font-weight: 700;
+  color: var(--color-burdeos);
+}
+
+.pedidos-lista__meta {
+  font-size: var(--fs-xs);
+  color: var(--color-texto-suave);
+}
+
+/* --- Cliente (con "avatar") --- */
+.pedidos-lista__cliente {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.pedidos-lista__avatar {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--color-crema-oscura);
+  border: 1px solid var(--color-borde);
+}
+
+.pedidos-lista__cliente-email {
+  margin: 0;
+  word-break: break-word;
+}
+
+/* --- Total --- */
+.pedidos-lista__total p {
+  font-weight: 700;
+}
+
+/* --- Badge de estado --- */
+.pedidos-lista__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+}
+
+.estado--pendiente {
+  background-color: var(--color-dorado-suave);
+  color: var(--color-burdeos-oscuro);
+}
+
+.estado--listo {
+  background-color: var(--color-estado-ok);
+  color: var(--color-blanco);
+}
+
+.estado--alerta {
+  background-color: var(--color-estado-alerta);
+  color: var(--color-blanco);
+}
+
+.estado--neutro {
+  background-color: var(--color-crema-oscura);
+  color: var(--color-texto-suave);
+}
+
+/* --- Etiquetas de campo, solo en mobile --- */
+.pedidos-lista__etiqueta-movil {
+  display: none;
+}
+
+/* --- Responsive: tarjetas apiladas --- */
+@media (max-width: 960px) {
+  .pedidos-lista__encabezado {
+    display: none;
+  }
+
+  .pedidos-lista__fila {
+    grid-template-columns: 1fr;
+    gap: var(--space-xs);
+  }
+
+  .pedidos-lista__etiqueta-movil {
+    display: inline-block;
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-texto-suave);
+    margin-bottom: 0.15rem;
+  }
 }

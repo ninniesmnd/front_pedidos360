@@ -1,7 +1,8 @@
 import { Routes } from '@angular/router';
 import { Home } from './pages/home/home';
 import { Login } from './pages/login/login';
-import { Dashboard } from './pages/dashboard/dashboard';  
+import { Dashboard } from './pages/dashboard/dashboard';
+import { SobreNosotrosPagina } from './pages/sobre-nosotros/sobre-nosotros';
 import { MsalGuard } from '@azure/msal-angular';
 
 export const routes: Routes = [
@@ -9,6 +10,11 @@ export const routes: Routes = [
     path: '',
     component: Home,
     title: 'Pedidos 360 | Inicio'
+  },
+  {
+    path: 'sobre-nosotros',
+    component: SobreNosotrosPagina,
+    title: 'Pedidos 360 | Sobre nosotros'
   },
   {
     path: 'login',
