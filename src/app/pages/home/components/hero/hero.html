@@ -15,7 +15,11 @@
       para tomar, seguir y controlar cada pedido de principio a fin.
     </p>
     <div class="hero__acciones">
-      <a routerLink="/login" class="boton boton--primario">Iniciar sesión</a>
+      @if (estaAutenticado()) {
+        <a routerLink="/dashboard" class="boton boton--primario">Ir a mi panel</a>
+      } @else {
+        <a routerLink="/login" class="boton boton--primario">Iniciar sesión</a>
+      }
       <a href="#sobre-nosotros" class="boton boton--secundario hero__accion-clara">Conócenos</a>
     </div>
   </div>

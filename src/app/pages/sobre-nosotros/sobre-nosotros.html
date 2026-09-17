@@ -107,6 +107,10 @@
     <p class="cta__texto">
       Súmate a Pedidos 360 y empieza a gestionar tus pedidos desde un solo lugar.
     </p>
-    <a routerLink="/login" class="boton boton--primario">Iniciar sesión</a>
+    @if (estaAutenticado()) {
+      <a routerLink="/dashboard" class="boton boton--primario">Ir a mi panel</a>
+    } @else {
+      <a routerLink="/login" class="boton boton--primario">Iniciar sesión</a>
+    }
   </div>
 </section>
