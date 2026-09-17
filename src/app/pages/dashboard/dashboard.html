@@ -1,80 +1,86 @@
 <section class="pedidos-panel">
-  <header class="pedidos-panel__encabezado">
-    <h1 class="pedidos-panel__titulo">Pedidos</h1>
-    <div class="pedidos-panel__acciones">
-      <button type="button" class="boton boton--secundario" (click)="cargarPedidos()">
-        Actualizar
-      </button>
-      <button type="button" class="boton boton--primario">
-        Nuevo pedido
-      </button>
+  @if (esAdminGeneral()) {
+    <div class="resumen-admin">
+      <p class="resumen-admin__texto">AQUI VA UN RESUMEN PARA ADMIN</p>
     </div>
-  </header>
-
-  <div class="pedidos-panel__filtros">
-    <div class="pedidos-panel__campo pedidos-panel__campo--busqueda">
-      <label class="pedidos-panel__etiqueta" for="busqueda-pedido">Pedido o cliente</label>
-      <input
-        id="busqueda-pedido"
-        type="text"
-        placeholder="Buscar por # de pedido o email"
-        class="pedidos-panel__input"
-        [value]="busqueda()"
-        (input)="actualizarBusqueda($any($event.target).value)"
-      />
-    </div>
-
-    <div class="pedidos-panel__campo">
-      <label class="pedidos-panel__etiqueta" for="filtro-estado">Estado</label>
-      <select
-        id="filtro-estado"
-        class="pedidos-panel__select"
-        [value]="estadoSeleccionado()"
-        (change)="actualizarEstado($any($event.target).value)"
-      >
-        @for (estado of estadosDisponibles(); track estado) {
-          <option [value]="estado">{{ estado === 'todos' ? 'Todos los estados' : estado }}</option>
-        }
-      </select>
-    </div>
-  </div>
-
-  @if (error()) {
-    <p class="pedidos-panel__error">{{ error() }}</p>
   } @else {
-    <app-pedidos-tabla [pedidos]="pedidosPagina()" [cargando]="cargando()" />
+    <header class="pedidos-panel__encabezado">
+      <h1 class="pedidos-panel__titulo">Pedidos</h1>
+      <div class="pedidos-panel__acciones">
+        <button type="button" class="boton boton--secundario" (click)="cargarPedidos()">
+          Actualizar
+        </button>
+        <button type="button" class="boton boton--primario">
+          Nuevo pedido
+        </button>
+      </div>
+    </header>
 
-    <footer class="pedidos-panel__pie">
-      <p class="pedidos-panel__resultados">{{ pedidosFiltrados().length }} resultados</p>
+    <div class="pedidos-panel__filtros">
+      <div class="pedidos-panel__campo pedidos-panel__campo--busqueda">
+        <label class="pedidos-panel__etiqueta" for="busqueda-pedido">Pedido o cliente</label>
+        <input
+          id="busqueda-pedido"
+          type="text"
+          placeholder="Buscar por # de pedido o email"
+          class="pedidos-panel__input"
+          [value]="busqueda()"
+          (input)="actualizarBusqueda($any($event.target).value)"
+        />
+      </div>
 
-      @if (totalPaginas() > 1) {
-        <nav class="pedidos-panel__paginacion" aria-label="Paginación de pedidos">
-          <button
-            type="button"
-            class="pedidos-panel__pagina-boton"
-            (click)="irAPagina(paginaActual() - 1)"
-            [disabled]="paginaActual() === 1"
-            aria-label="Página anterior"
-          >‹</button>
+      <div class="pedidos-panel__campo">
+        <label class="pedidos-panel__etiqueta" for="filtro-estado">Estado</label>
+        <select
+          id="filtro-estado"
+          class="pedidos-panel__select"
+          [value]="estadoSeleccionado()"
+          (change)="actualizarEstado($any($event.target).value)"
+        >
+          @for (estado of estadosDisponibles(); track estado) {
+            <option [value]="estado">{{ estado === 'todos' ? 'Todos los estados' : estado }}</option>
+          }
+        </select>
+      </div>
+    </div>
 
-          @for (pagina of paginasVisibles(); track pagina) {
+    @if (error()) {
+      <p class="pedidos-panel__error">{{ error() }}</p>
+    } @else {
+      <app-pedidos-tabla [pedidos]="pedidosPagina()" [cargando]="cargando()" />
+
+      <footer class="pedidos-panel__pie">
+        <p class="pedidos-panel__resultados">{{ pedidosFiltrados().length }} resultados</p>
+
+        @if (totalPaginas() > 1) {
+          <nav class="pedidos-panel__paginacion" aria-label="Paginación de pedidos">
             <button
               type="button"
               class="pedidos-panel__pagina-boton"
-              [class.pedidos-panel__pagina-boton--activo]="pagina === paginaActual()"
-              (click)="irAPagina(pagina)"
-            >{{ pagina }}</button>
-          }
+              (click)="irAPagina(paginaActual() - 1)"
+              [disabled]="paginaActual() === 1"
+              aria-label="Página anterior"
+            >‹</button>
 
-          <button
-            type="button"
-            class="pedidos-panel__pagina-boton"
-            (click)="irAPagina(paginaActual() + 1)"
-            [disabled]="paginaActual() === totalPaginas()"
-            aria-label="Página siguiente"
-          >›</button>
-        </nav>
-      }
-    </footer>
+            @for (pagina of paginasVisibles(); track pagina) {
+              <button
+                type="button"
+                class="pedidos-panel__pagina-boton"
+                [class.pedidos-panel__pagina-boton--activo]="pagina === paginaActual()"
+                (click)="irAPagina(pagina)"
+              >{{ pagina }}</button>
+            }
+
+            <button
+              type="button"
+              class="pedidos-panel__pagina-boton"
+              (click)="irAPagina(paginaActual() + 1)"
+              [disabled]="paginaActual() === totalPaginas()"
+              aria-label="Página siguiente"
+            >›</button>
+          </nav>
+        }
+      </footer>
+    }
   }
 </section>
