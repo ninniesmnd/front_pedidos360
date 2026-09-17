@@ -23,6 +23,11 @@ export class Dashboard implements OnInit {
   protected readonly paginaActual = signal(1);
   protected readonly porPagina = 10;
 
+  /** Reactivo: se recalcula cuando AuthService.cargarRoles() actualiza los roles. */
+  protected readonly esAdminGeneral = computed(() =>
+    this.auth.hasRole(AppRole.AdminGeneral)
+  );
+
   protected readonly estadosDisponibles = computed(() => {
     const estados = new Set(this.pedidos().map(p => p.estado));
     return ['todos', ...Array.from(estados)];
@@ -55,7 +60,10 @@ export class Dashboard implements OnInit {
   });
 
   ngOnInit(): void {
-    this.cargarPedidos();
+    // AdminGeneral solo ve el resumen (placeholder); no se piden ni muestran pedidos.
+    if (!this.esAdminGeneral()) {
+      this.cargarPedidos();
+    }
   }
 
   protected cargarPedidos(): void {
