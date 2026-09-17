@@ -4,6 +4,7 @@ import { Login } from './pages/login/login';
 import { Dashboard } from './pages/dashboard/dashboard';
 import { SobreNosotrosPagina } from './pages/sobre-nosotros/sobre-nosotros';
 import { MsalGuard } from '@azure/msal-angular';
+import { rolesLoadedGuard } from './core/auth/roles-loaded.guard';
 
 export const routes: Routes = [
   {
@@ -22,10 +23,9 @@ export const routes: Routes = [
     title: 'Pedidos 360 | Iniciar sesión'
   },
   {
-      path: 'dashboard',
-      component: Dashboard,
-      title: 'Pedidos 360 | Panel',
-      canActivate: [MsalGuard]
-
-    }
-  ];
+    path: 'dashboard',
+    component: Dashboard,
+    title: 'Pedidos 360 | Panel',
+    canActivate: [MsalGuard, rolesLoadedGuard]
+  }
+];

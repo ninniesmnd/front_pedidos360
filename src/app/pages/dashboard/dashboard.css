@@ -12,6 +12,23 @@
   gap: var(--space-md);
 }
 
+/* --- Resumen para AdminGeneral (placeholder) --- */
+.resumen-admin {
+  padding: var(--space-lg) var(--space-md);
+  background-color: var(--color-blanco);
+  border: 1px dashed var(--color-dorado);
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+
+.resumen-admin__texto {
+  margin: 0;
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--color-burdeos);
+}
+
 /* --- Encabezado --- */
 .pedidos-panel__encabezado {
   display: flex;
