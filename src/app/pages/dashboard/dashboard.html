@@ -1,7 +1,11 @@
 <section class="pedidos-panel">
   @if (esAdminGeneral()) {
     <div class="resumen-admin">
-      <p class="resumen-admin__texto">AQUI VA UN RESUMEN PARA ADMIN</p>
+      <h1 class="resumen-admin__titulo">Panel de administración</h1>
+      <p class="resumen-admin__texto">
+        Desde aquí gestionas el catálogo de productos de la red. Los pedidos y la operación
+        del día a día los llevan los locales.
+      </p>
     </div>
   } @else {
     <header class="pedidos-panel__encabezado">
@@ -10,9 +14,11 @@
         <button type="button" class="boton boton--secundario" (click)="cargarPedidos()">
           Actualizar
         </button>
-        <button type="button" class="boton boton--primario">
-          Nuevo pedido
-        </button>
+        @if (esCliente()) {
+          <button type="button" class="boton boton--primario" (click)="abrirNuevoPedido()">
+            Nuevo pedido
+          </button>
+        }
       </div>
     </header>
 
@@ -82,5 +88,32 @@
         }
       </footer>
     }
+  }
+
+  @if (mostrandoFormulario()) {
+    <app-nuevo-pedido (creado)="onPedidoCreado()" (cerrar)="cerrarNuevoPedido()" />
+  }
+
+  @if (esAdmin()) {
+    <section class="ventas-panel pedidos-panel">
+      <h2 class="pedidos-panel__titulo">Ventas</h2>
+      <app-ventas-tabla [ventas]="ventas()" [cargando]="cargandoVentas()" />
+    </section>
+
+    <section class="productos-panel pedidos-panel">
+      <header class="pedidos-panel__encabezado">
+        <h2 class="pedidos-panel__titulo">Productos</h2>
+        <div class="pedidos-panel__acciones">
+          <button type="button" class="boton boton--primario" (click)="abrirNuevoProducto()">
+            Agregar producto
+          </button>
+        </div>
+      </header>
+      <app-productos-tabla [productos]="productos()" [cargando]="cargandoProductos()" />
+    </section>
+  }
+
+  @if (mostrandoFormularioProducto()) {
+    <app-nuevo-producto (creado)="onProductoCreado()" (cerrar)="cerrarNuevoProducto()" />
   }
 </section>

@@ -1,6 +1,5 @@
 .productos {
   width: 100%;
-  line-height: 0;
 }
 
 .productos__imagen {
@@ -8,6 +7,95 @@
   height: 480px;
   object-fit: cover;
   object-position: center;
+  line-height: 0;
+  display: block;
+}
+
+.productos__cta {
+  text-align: center;
+  padding: 1.5rem 1rem;
+}
+
+.productos__catalogo {
+  padding: 3rem 0;
+}
+
+.productos__titulo {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.productos__estado {
+  text-align: center;
+  color: var(--color-texto-secundario, #666);
+}
+
+.productos__estado--error {
+  color: var(--color-error, #b91c1c);
+}
+
+.productos__carrusel-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.productos__carrusel {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  padding-bottom: 0.5rem;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.productos__carrusel::-webkit-scrollbar {
+  display: none;
+}
+
+.productos__carrusel-item {
+  flex: 0 0 260px;
+  scroll-snap-align: start;
+}
+
+.productos__flecha {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--color-borde);
+  background-color: var(--color-blanco);
+  color: var(--color-burdeos);
+  box-shadow: var(--shadow-card);
+  transition: background-color 0.2s ease, color 0.2s ease, opacity 0.2s ease;
+}
+
+.productos__flecha:hover:not(:disabled) {
+  background-color: var(--color-burdeos);
+  color: var(--color-blanco);
+}
+
+.productos__flecha:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.productos__ver-mas {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+@media (max-width: 640px) {
+  .productos__flecha {
+    width: 36px;
+    height: 36px;
+  }
 }
 
 @media (max-width: 860px) {

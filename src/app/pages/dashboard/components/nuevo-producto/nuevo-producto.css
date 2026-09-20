@@ -1,0 +1,94 @@
+.modal-fondo {
+  position: fixed;
+  inset: 0;
+  background: rgba(43, 26, 20, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: var(--space-md);
+}
+
+.modal-caja {
+  background-color: var(--color-blanco);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-lg);
+  width: min(90vw, 480px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-caja h2 {
+  font-family: var(--font-display);
+  font-size: var(--fs-xl);
+  color: var(--color-burdeos);
+}
+
+.modal-caja label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--color-texto-suave);
+}
+
+.modal-caja input {
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: var(--fs-base);
+  color: var(--color-texto);
+  background-color: var(--color-crema);
+}
+
+.modal-caja input:focus-visible {
+  outline: 2px solid var(--color-dorado);
+  outline-offset: 1px;
+}
+
+.mensaje-error {
+  color: var(--color-estado-alerta);
+  font-size: var(--fs-sm);
+}
+
+.acciones-modal {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-xs);
+  margin-top: var(--space-xs);
+}
+
+.acciones-modal button:first-child {
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-borde);
+  background: transparent;
+  color: var(--color-texto-suave);
+  font-weight: 600;
+  font-size: var(--fs-sm);
+}
+
+.acciones-modal button:last-child {
+  padding: 0.75rem 1.75rem;
+  border-radius: var(--radius-sm);
+  border: none;
+  background-color: var(--color-burdeos);
+  color: var(--color-blanco);
+  font-weight: 600;
+  font-size: var(--fs-sm);
+}
+
+.acciones-modal button:last-child:hover {
+  background-color: var(--color-burdeos-oscuro);
+}
+
+.acciones-modal button:last-child:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

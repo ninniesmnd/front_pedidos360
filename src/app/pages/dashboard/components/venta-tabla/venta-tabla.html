@@ -1,0 +1,24 @@
+<div class="ventas-lista">
+  @if (cargando()) {
+    <p>Cargando ventas…</p>
+  } @else if (ventas().length === 0) {
+    <p>No hay ventas registradas.</p>
+  } @else {
+    <table>
+      <thead>
+        <tr><th>ID</th><th>Local</th><th>Vendedor</th><th>Fecha</th><th>Total</th></tr>
+      </thead>
+      <tbody>
+        @for (v of ventas(); track v.id) {
+          <tr>
+            <td>{{ v.id }}</td>
+            <td>{{ v.localId }}</td>
+            <td>{{ v.vendedorEmail }}</td>
+            <td>{{ v.fechaVenta | date: 'dd/MM/yyyy HH:mm' }}</td>
+            <td>$ {{ v.total | number: '1.0-2' }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>

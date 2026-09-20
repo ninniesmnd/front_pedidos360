@@ -1,5 +1,5 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners, APP_INITIALIZER } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withInMemoryScrolling } from '@angular/router';
 import { provideHttpClient, withInterceptorsFromDi, HTTP_INTERCEPTORS } from '@angular/common/http';
 import {
   PublicClientApplication,
@@ -46,6 +46,7 @@ function MSALGuardConfigFactory(): MsalGuardConfiguration {
 function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
   const protectedResourceMap = new Map<string, Array<string>>();
   protectedResourceMap.set(`${environment.apiBaseUrl}/api/*`, environment.msal.apiScopes);
+  protectedResourceMap.set(`${environment.ventasApiBaseUrl}/api/*`, environment.msal.apiScopes);
 
   return {
     interactionType: InteractionType.Redirect,
@@ -60,7 +61,7 @@ function initializeMsal(msalService: MsalService) {
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideRouter(routes),
+    provideRouter(routes, withInMemoryScrolling({ anchorScrolling: 'enabled', scrollPositionRestoration: 'enabled' })),
     provideHttpClient(withInterceptorsFromDi()),
     {
       provide: MSAL_INSTANCE,

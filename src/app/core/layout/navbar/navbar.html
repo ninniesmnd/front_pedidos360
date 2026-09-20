@@ -6,7 +6,7 @@
     </a>
 
     <nav class="navbar__enlaces" [class.navbar__enlaces--abierto]="menuAbierto()">
-      <a href="#" class="navbar__enlace">Productos</a>
+      <a routerLink="/productos" class="navbar__enlace">Productos</a>
       <a routerLink="/dashboard" class="navbar__enlace">Pedidos</a>
       <a routerLink="/sobre-nosotros" class="navbar__enlace">Sobre nosotros</a>
       <a href="#" class="navbar__enlace">Soporte</a>
@@ -23,7 +23,7 @@
         </button>
       } @else {
         <a routerLink="/login" class="boton boton--secundario navbar__accion-desktop">Iniciar sesión</a>
-        <a href="#" class="boton boton--primario navbar__accion-desktop">Registrar</a>
+        <a routerLink="/login" class="boton boton--primario navbar__accion-desktop">Registrar</a>
       }
 
       <button
