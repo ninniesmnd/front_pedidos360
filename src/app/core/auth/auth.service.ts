@@ -1,4 +1,4 @@
-import { Injectable, inject, signal, computed } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { MsalService } from '@azure/msal-angular';
 import { jwtDecode } from 'jwt-decode';
 import { environment } from '../../../enviroments/enviroment';
@@ -10,7 +10,25 @@ export class AuthService {
 
   private readonly _roles = signal<string[]>([]);
   readonly roles = this._roles.asReadonly();
-  readonly isAuthenticated = computed(() => this.msal.instance.getActiveAccount() !== null);
+
+  // Ojo: MSAL no expone el estado de la cuenta activa como una signal ni un
+  // observable propio, así que no hay forma confiable de derivar esto con
+  // computed()/toSignal() — ambos terminan cacheando una lectura hecha antes
+  // de que app.ts alcance a activar la cuenta (setActiveAccount corre en su
+  // ngOnInit, después del constructor de este servicio). Por eso este es un
+  // signal explícito: solo cambia cuando actualizarEstadoAutenticacion() se
+  // llama a propósito, después de que sabemos que el estado pudo cambiar.
+  private readonly _autenticado = signal(this.msal.instance.getActiveAccount() !== null);
+  readonly isAuthenticated = this._autenticado.asReadonly();
+
+  /**
+   * Llamar cada vez que el estado de la cuenta activa de MSAL pudo haber
+   * cambiado: tras handleRedirectObservable, tras el fallback de sesión ya
+   * activa (SSO silencioso / recarga de página), y tras logout.
+   */
+  actualizarEstadoAutenticacion(): void {
+    this._autenticado.set(this.msal.instance.getActiveAccount() !== null);
+  }
 
   /** Se llama una vez tras el login (o en un APP_INITIALIZER) */
   async cargarRoles(): Promise<void> {
@@ -43,6 +61,7 @@ export class AuthService {
   }
 
   logout(): void {
+    this._autenticado.set(false);
     this.msal.logoutRedirect();
   }
 }

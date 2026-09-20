@@ -1,0 +1,98 @@
+<section class="cabecera">
+  <div class="contenedor cabecera__interior">
+    <h1 class="cabecera__titulo">Productos</h1>
+    <p class="cabecera__ruta">
+      <a routerLink="/">Inicio</a>
+      <span>/</span>
+      <span>Productos</span>
+    </p>
+  </div>
+</section>
+
+<section class="catalogo contenedor">
+  @if (cargando()) {
+    <p class="catalogo__estado">Cargando productos…</p>
+  } @else if (error()) {
+    <p class="catalogo__estado catalogo__estado--error">{{ error() }}</p>
+  } @else if (productos().length === 0) {
+    <p class="catalogo__estado">Todavía no hay productos disponibles.</p>
+  } @else {
+    <div class="catalogo__grilla">
+      @for (producto of productos(); track producto.id) {
+        <app-card
+          [titulo]="producto.nombre"
+          [descripcion]="producto.descripcion + ' — $' + producto.precio"
+          variante="ticket"
+        >
+          <div class="catalogo__accion">
+            <button type="button" class="boton boton--secundario" (click)="agregarAlCarrito(producto)">
+              Agregar
+            </button>
+            @if (cantidadDe(producto.id) > 0) {
+              <span class="catalogo__cantidad">{{ cantidadDe(producto.id) }} en tu pedido</span>
+            }
+          </div>
+        </app-card>
+      }
+    </div>
+  }
+</section>
+
+@if (pedidoConfirmado()) {
+  <div class="catalogo__confirmacion contenedor">
+    <p>¡Tu pedido se creó correctamente! Puedes revisarlo desde tu panel.</p>
+  </div>
+}
+
+@if (carritoItems().length > 0 && !panelAbierto()) {
+  <div class="carrito-flotante">
+    <span>{{ totalItems() }} producto(s) — ${{ totalCarrito() }}</span>
+    <button type="button" class="boton boton--primario" (click)="abrirPanel()">Ver pedido</button>
+  </div>
+}
+
+@if (panelAbierto()) {
+  <div class="modal-fondo" (click)="cerrarPanel()">
+    <div class="modal-caja" (click)="$event.stopPropagation()">
+      <h2>Tu pedido</h2>
+
+      <label>
+        Local
+        <input type="number" [(ngModel)]="localId" min="1" />
+      </label>
+
+      <label>
+        Tipo de despacho
+        <select [(ngModel)]="tipoDespacho">
+          <option value="DELIVERY">Delivery</option>
+          <option value="RETIRO_EN_TIENDA">Retiro en tienda</option>
+        </select>
+      </label>
+
+      @if (carritoItems().length > 0) {
+        <ul class="lista-items">
+          @for (item of carritoItems(); track item.productoId; let i = $index) {
+            <li>
+              {{ item.cantidad }}x {{ item.nombreProducto }} — ${{ item.precioUnitario * item.cantidad }}
+              <button type="button" (click)="quitarItem(i)">Quitar</button>
+            </li>
+          }
+        </ul>
+        <p><strong>Total: ${{ totalCarrito() }}</strong></p>
+      } @else {
+        <p>Todavía no agregaste productos.</p>
+      }
+
+      @if (errorPedido()) {
+        <p class="mensaje-error">{{ errorPedido() }}</p>
+      }
+
+      <div class="acciones-modal">
+        <button type="button" (click)="cerrarPanel()">Seguir viendo</button>
+        <button type="button" (click)="confirmarPedido()" [disabled]="enviando() || carritoItems().length === 0">
+          {{ enviando() ? 'Enviando…' : 'Confirmar pedido' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

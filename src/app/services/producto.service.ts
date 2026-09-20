@@ -14,9 +14,18 @@ export interface Producto {
   activo: boolean;
 }
 
+export interface CrearProductoRequest {
+  localId: number;
+  nombre: string;
+  descripcion?: string;
+  precio: number;
+  stock: number;
+  categoria?: string;
+}
+
 @Injectable({ providedIn: 'root' })
 export class ProductoService {
-  private baseUrl = `${environment.apiBaseUrl}/api/productos`;
+  private baseUrl = `${environment.ventasApiBaseUrl}/api/productos`;
 
   constructor(private http: HttpClient) {}
 
@@ -28,6 +37,10 @@ export class ProductoService {
 
   obtener(id: number): Observable<Producto> {
     return this.http.get<Producto>(`${this.baseUrl}/${id}`);
+  }
+
+  crear(request: CrearProductoRequest): Observable<Producto> {
+    return this.http.post<Producto>(this.baseUrl, request);
   }
 
   actualizarStock(id: number, delta: number): Observable<Producto> {

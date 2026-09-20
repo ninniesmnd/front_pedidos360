@@ -1,0 +1,213 @@
+:host {
+  display: block;
+}
+
+.cabecera {
+  background-color: var(--color-burdeos);
+  padding-block: var(--space-xl);
+}
+
+.cabecera__interior {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+  text-align: center;
+}
+
+.cabecera__titulo {
+  font-size: var(--fs-2xl);
+  color: var(--color-blanco);
+}
+
+.cabecera__ruta {
+  display: flex;
+  gap: var(--space-xs);
+  font-size: var(--fs-sm);
+  color: var(--color-dorado-suave);
+}
+
+.catalogo {
+  padding-block: 3rem;
+}
+
+.catalogo__estado {
+  text-align: center;
+  color: var(--color-texto-suave);
+}
+
+.catalogo__estado--error {
+  color: var(--color-error, #b91c1c);
+}
+
+.catalogo__grilla {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.5rem;
+}
+
+.catalogo__accion {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+  margin-top: 0.25rem;
+}
+
+.catalogo__cantidad {
+  font-size: var(--fs-xs);
+  color: var(--color-texto-suave);
+}
+
+.catalogo__confirmacion {
+  padding-bottom: 1.5rem;
+  color: var(--color-estado-ok);
+  font-weight: 600;
+  text-align: center;
+}
+
+.carrito-flotante {
+  position: fixed;
+  left: 50%;
+  bottom: var(--space-md);
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  background-color: var(--color-blanco);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: 0.75rem 1.25rem;
+  z-index: 900;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+
+.modal-fondo {
+  position: fixed;
+  inset: 0;
+  background: rgba(43, 26, 20, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: var(--space-md);
+}
+
+.modal-caja {
+  background-color: var(--color-blanco);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-lg);
+  width: min(90vw, 480px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-caja h2 {
+  font-family: var(--font-display);
+  font-size: var(--fs-xl);
+  color: var(--color-burdeos);
+}
+
+.modal-caja label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--color-texto-suave);
+}
+
+.modal-caja input,
+.modal-caja select {
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: var(--fs-base);
+  color: var(--color-texto);
+  background-color: var(--color-crema);
+}
+
+.modal-caja input:focus-visible,
+.modal-caja select:focus-visible {
+  outline: 2px solid var(--color-dorado);
+  outline-offset: 1px;
+}
+
+.lista-items {
+  border-top: 1px solid var(--color-borde);
+  border-bottom: 1px solid var(--color-borde);
+  padding: var(--space-xs) 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.lista-items li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--fs-sm);
+  color: var(--color-texto);
+}
+
+.lista-items li button {
+  background: none;
+  border: none;
+  color: var(--color-estado-alerta);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+}
+
+.modal-caja p strong {
+  color: var(--color-burdeos);
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+}
+
+.mensaje-error {
+  color: var(--color-estado-alerta);
+  font-size: var(--fs-sm);
+}
+
+.acciones-modal {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-xs);
+  margin-top: var(--space-xs);
+}
+
+.acciones-modal button:first-child {
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-borde);
+  background: transparent;
+  color: var(--color-texto-suave);
+  font-weight: 600;
+  font-size: var(--fs-sm);
+}
+
+.acciones-modal button:last-child {
+  padding: 0.75rem 1.75rem;
+  border-radius: var(--radius-sm);
+  border: none;
+  background-color: var(--color-burdeos);
+  color: var(--color-blanco);
+  font-weight: 600;
+  font-size: var(--fs-sm);
+}
+
+.acciones-modal button:last-child:hover {
+  background-color: var(--color-burdeos-oscuro);
+}
+
+.acciones-modal button:last-child:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

@@ -3,6 +3,7 @@ import { Home } from './pages/home/home';
 import { Login } from './pages/login/login';
 import { Dashboard } from './pages/dashboard/dashboard';
 import { SobreNosotrosPagina } from './pages/sobre-nosotros/sobre-nosotros';
+import { ProductosPagina } from './pages/productos/productos';
 import { MsalGuard } from '@azure/msal-angular';
 import { rolesLoadedGuard } from './core/auth/roles-loaded.guard';
 
@@ -16,6 +17,14 @@ export const routes: Routes = [
     path: 'sobre-nosotros',
     component: SobreNosotrosPagina,
     title: 'Pedidos 360 | Sobre nosotros'
+  },
+  {
+    path: 'productos',
+    component: ProductosPagina,
+    title: 'Pedidos 360 | Productos',
+    // El backend exige un rol autenticado para listar productos (ver
+    // ProductoController), así que igual que el dashboard, forzamos login.
+    canActivate: [MsalGuard, rolesLoadedGuard]
   },
   {
     path: 'login',

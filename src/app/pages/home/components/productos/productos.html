@@ -1,7 +1,64 @@
-<section class="productos">
-  <img
-    class="productos__imagen"
-    src="images/hero-productos.jpg"
-    alt="Selección de productos horneados de la red Pedidos 360"
-  />
+<section id="productos" class="productos">
+  @if (estaAutenticado()) {
+    <div class="productos__catalogo contenedor">
+      <h2 class="productos__titulo">Nuestro catálogo</h2>
+
+      @if (cargando()) {
+        <p class="productos__estado">Cargando productos…</p>
+      } @else if (error()) {
+        <p class="productos__estado productos__estado--error">{{ error() }}</p>
+      } @else if (productos().length === 0) {
+        <p class="productos__estado">Todavía no hay productos disponibles.</p>
+      } @else {
+        <div class="productos__carrusel-wrapper">
+          <button
+            type="button"
+            class="productos__flecha productos__flecha--izquierda"
+            (click)="desplazarCarrusel(-1)"
+            [disabled]="enInicio()"
+            aria-label="Ver productos anteriores"
+          >
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M15 18l-6-6 6-6" />
+            </svg>
+          </button>
+
+          <div class="productos__carrusel" #carrusel (scroll)="actualizarLimites()">
+            @for (producto of productosCarrusel(); track producto.id) {
+              <div class="productos__carrusel-item">
+                <app-card
+                  [titulo]="producto.nombre"
+                  [descripcion]="producto.descripcion + ' — $' + producto.precio"
+                  variante="ticket"
+                />
+              </div>
+            }
+          </div>
+
+          <button
+            type="button"
+            class="productos__flecha productos__flecha--derecha"
+            (click)="desplazarCarrusel(1)"
+            [disabled]="enFinal()"
+            aria-label="Ver más productos"
+          >
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 18l6-6-6-6" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="productos__ver-mas">
+          <a routerLink="/productos" class="boton boton--secundario">Ver más productos</a>
+        </div>
+      }
+    </div>
+  } @else {
+    
+    <p class="productos__cta">
+      <br>
+      Inicia sesión para ver nuestro catálogo de productos.
+      <br>
+    </p>
+  }
 </section>

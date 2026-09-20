@@ -1,21 +1,25 @@
 import { Component, inject, signal, computed, OnInit } from '@angular/core';
 import { PedidoService, Pedido } from '../../services/pedido.service';
 import { VentaService, Venta } from '../../services/venta.service';
+import { ProductoService, Producto } from '../../services/producto.service';
 import { AuthService } from '../../core/auth/auth.service';
 import { AppRole } from '../../core/auth/roles';
 import { PedidosTabla } from '../../shared/components/pedido-tabla/pedidos-tabla';
 import { NuevoPedido } from './components/nuevo-pedido/nuevo-pedido';
 import { VentasTabla } from './components/venta-tabla/venta-tabla';
+import { ProductosTabla } from './components/productos-tabla/productos-tabla';
+import { NuevoProducto } from './components/nuevo-producto/nuevo-producto';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [PedidosTabla, NuevoPedido, VentasTabla],
+  imports: [PedidosTabla, NuevoPedido, VentasTabla, ProductosTabla, NuevoProducto],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })
 export class Dashboard implements OnInit {
   private readonly pedidoService = inject(PedidoService);
   private readonly ventaService = inject(VentaService);
+  private readonly productoService = inject(ProductoService);
   private readonly auth = inject(AuthService);
 
   protected readonly pedidos = signal<Pedido[]>([]);
@@ -30,6 +34,10 @@ export class Dashboard implements OnInit {
   protected readonly mostrandoFormulario = signal(false);
   protected readonly ventas = signal<Venta[]>([]);
   protected readonly cargandoVentas = signal(false);
+
+  protected readonly productos = signal<Producto[]>([]);
+  protected readonly cargandoProductos = signal(false);
+  protected readonly mostrandoFormularioProducto = signal(false);
 
   protected readonly esAdminGeneral = computed(() =>
     this.auth.hasRole(AppRole.AdminGeneral)
@@ -81,6 +89,7 @@ export class Dashboard implements OnInit {
 
     if (this.esAdmin()) {
       this.cargarVentas();
+      this.cargarProductosAdmin();
     }
   }
 
@@ -116,6 +125,17 @@ export class Dashboard implements OnInit {
     });
   }
 
+  protected cargarProductosAdmin(): void {
+    this.cargandoProductos.set(true);
+    this.productoService.listar().subscribe({
+      next: (data) => {
+        this.productos.set(data);
+        this.cargandoProductos.set(false);
+      },
+      error: () => this.cargandoProductos.set(false)
+    });
+  }
+
   protected abrirNuevoPedido(): void {
     this.mostrandoFormulario.set(true);
   }
@@ -127,6 +147,19 @@ export class Dashboard implements OnInit {
   protected onPedidoCreado(): void {
     this.mostrandoFormulario.set(false);
     this.cargarPedidos();
+  }
+
+  protected abrirNuevoProducto(): void {
+    this.mostrandoFormularioProducto.set(true);
+  }
+
+  protected cerrarNuevoProducto(): void {
+    this.mostrandoFormularioProducto.set(false);
+  }
+
+  protected onProductoCreado(): void {
+    this.mostrandoFormularioProducto.set(false);
+    this.cargarProductosAdmin();
   }
 
   protected actualizarBusqueda(valor: string): void {

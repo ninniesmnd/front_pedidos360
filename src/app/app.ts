@@ -25,6 +25,8 @@ export class App implements OnInit {
           this.msalService.instance.setActiveAccount(result.account);
         }
 
+        this.auth.actualizarEstadoAutenticacion();
+
         if (this.msalService.instance.getActiveAccount()) {
           this.auth.cargarRoles();
         }
@@ -39,6 +41,8 @@ export class App implements OnInit {
         this.msalService.instance.setActiveAccount(cuentas[0]);
       }
     }
+
+    this.auth.actualizarEstadoAutenticacion();
 
     if (this.msalService.instance.getActiveAccount()) {
       this.auth.cargarRoles();

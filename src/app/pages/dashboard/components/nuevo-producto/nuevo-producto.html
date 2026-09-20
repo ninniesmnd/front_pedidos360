@@ -1,0 +1,46 @@
+<div class="modal-fondo" (click)="cerrar.emit()">
+  <div class="modal-caja" (click)="$event.stopPropagation()">
+    <h2>Nuevo producto</h2>
+
+    <label>
+      Local
+      <input type="number" [(ngModel)]="localId" min="1" />
+    </label>
+
+    <label>
+      Nombre
+      <input type="text" [(ngModel)]="nombre" placeholder="Ej: Torta de chocolate" />
+    </label>
+
+    <label>
+      Descripción
+      <input type="text" [(ngModel)]="descripcion" placeholder="Opcional" />
+    </label>
+
+    <label>
+      Categoría
+      <input type="text" [(ngModel)]="categoria" placeholder="Opcional" />
+    </label>
+
+    <label>
+      Precio
+      <input type="number" [(ngModel)]="precio" min="1" step="1" />
+    </label>
+
+    <label>
+      Stock inicial
+      <input type="number" [(ngModel)]="stock" min="0" />
+    </label>
+
+    @if (error()) {
+      <p class="mensaje-error">{{ error() }}</p>
+    }
+
+    <div class="acciones-modal">
+      <button type="button" (click)="cerrar.emit()">Cancelar</button>
+      <button type="button" (click)="confirmar()" [disabled]="enviando()">
+        {{ enviando() ? 'Guardando…' : 'Crear producto' }}
+      </button>
+    </div>
+  </div>
+</div>
