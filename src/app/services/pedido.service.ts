@@ -22,6 +22,19 @@ export interface ItemPedido {
   precioUnitario: number;
 }
 
+export interface ItemPedidoRequest {
+  productoId: number;
+  nombreProducto: string;
+  cantidad: number;
+  precioUnitario: number;
+}
+
+export interface CrearPedidoRequest {
+  localId: number;
+  tipoDespacho: string;
+  items: ItemPedidoRequest[];
+}
+
 @Injectable({ providedIn: 'root' })
 export class PedidoService {
   private baseUrl = `${environment.apiBaseUrl}/api/pedidos`;
@@ -44,5 +57,9 @@ export class PedidoService {
     let params = new HttpParams();
     if (localId != null) params = params.set('localId', localId);
     return this.http.get<Pedido[]>(`${this.baseUrl}/admin`, { params });
+  }
+
+  crearPedido(request: CrearPedidoRequest): Observable<Pedido> {
+    return this.http.post<Pedido>(this.baseUrl, request);
   }
 }

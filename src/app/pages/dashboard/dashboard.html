@@ -10,9 +10,11 @@
         <button type="button" class="boton boton--secundario" (click)="cargarPedidos()">
           Actualizar
         </button>
-        <button type="button" class="boton boton--primario">
-          Nuevo pedido
-        </button>
+        @if (esCliente()) {
+          <button type="button" class="boton boton--primario" (click)="abrirNuevoPedido()">
+            Nuevo pedido
+          </button>
+        }
       </div>
     </header>
 
@@ -82,5 +84,16 @@
         }
       </footer>
     }
+  }
+
+  @if (mostrandoFormulario()) {
+    <app-nuevo-pedido (creado)="onPedidoCreado()" (cerrar)="cerrarNuevoPedido()" />
+  }
+
+  @if (esAdmin()) {
+    <section class="ventas-panel pedidos-panel">
+      <h2 class="pedidos-panel__titulo">Ventas</h2>
+      <app-ventas-tabla [ventas]="ventas()" [cargando]="cargandoVentas()" />
+    </section>
   }
 </section>

@@ -1,17 +1,21 @@
 import { Component, inject, signal, computed, OnInit } from '@angular/core';
 import { PedidoService, Pedido } from '../../services/pedido.service';
+import { VentaService, Venta } from '../../services/venta.service';
 import { AuthService } from '../../core/auth/auth.service';
 import { AppRole } from '../../core/auth/roles';
 import { PedidosTabla } from '../../shared/components/pedido-tabla/pedidos-tabla';
+import { NuevoPedido } from './components/nuevo-pedido/nuevo-pedido';
+import { VentasTabla } from './components/venta-tabla/venta-tabla';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [PedidosTabla],
+  imports: [PedidosTabla, NuevoPedido, VentasTabla],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })
 export class Dashboard implements OnInit {
   private readonly pedidoService = inject(PedidoService);
+  private readonly ventaService = inject(VentaService);
   private readonly auth = inject(AuthService);
 
   protected readonly pedidos = signal<Pedido[]>([]);
@@ -23,9 +27,20 @@ export class Dashboard implements OnInit {
   protected readonly paginaActual = signal(1);
   protected readonly porPagina = 10;
 
-  /** Reactivo: se recalcula cuando AuthService.cargarRoles() actualiza los roles. */
+  protected readonly mostrandoFormulario = signal(false);
+  protected readonly ventas = signal<Venta[]>([]);
+  protected readonly cargandoVentas = signal(false);
+
   protected readonly esAdminGeneral = computed(() =>
     this.auth.hasRole(AppRole.AdminGeneral)
+  );
+
+  protected readonly esCliente = computed(() =>
+    this.auth.hasRole(AppRole.Cliente)
+  );
+
+  protected readonly esAdmin = computed(() =>
+    this.auth.hasAnyRole([AppRole.AdminLocal, AppRole.AdminGeneral])
   );
 
   protected readonly estadosDisponibles = computed(() => {
@@ -60,9 +75,12 @@ export class Dashboard implements OnInit {
   });
 
   ngOnInit(): void {
-    // AdminGeneral solo ve el resumen (placeholder); no se piden ni muestran pedidos.
     if (!this.esAdminGeneral()) {
       this.cargarPedidos();
+    }
+
+    if (this.esAdmin()) {
+      this.cargarVentas();
     }
   }
 
@@ -85,6 +103,30 @@ export class Dashboard implements OnInit {
         this.cargando.set(false);
       }
     });
+  }
+
+  private cargarVentas(): void {
+    this.cargandoVentas.set(true);
+    this.ventaService.listar().subscribe({
+      next: (data) => {
+        this.ventas.set(data);
+        this.cargandoVentas.set(false);
+      },
+      error: () => this.cargandoVentas.set(false)
+    });
+  }
+
+  protected abrirNuevoPedido(): void {
+    this.mostrandoFormulario.set(true);
+  }
+
+  protected cerrarNuevoPedido(): void {
+    this.mostrandoFormulario.set(false);
+  }
+
+  protected onPedidoCreado(): void {
+    this.mostrandoFormulario.set(false);
+    this.cargarPedidos();
   }
 
   protected actualizarBusqueda(valor: string): void {

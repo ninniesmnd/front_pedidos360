@@ -1,0 +1,52 @@
+<div class="modal-fondo" (click)="cerrar.emit()">
+  <div class="modal-caja" (click)="$event.stopPropagation()">
+    <h2>Nuevo pedido</h2>
+
+    <label>
+      Local
+      <input type="number" [(ngModel)]="localId" min="1" />
+    </label>
+
+    <label>
+      Tipo de despacho
+      <select [(ngModel)]="tipoDespacho">
+        <option value="DELIVERY">Delivery</option>
+        <option value="RETIRO_EN_TIENDA">Retiro en tienda</option>
+      </select>
+    </label>
+
+    <div class="agregar-item">
+      <select [(ngModel)]="productoSeleccionadoId">
+        <option [ngValue]="null">Selecciona un producto</option>
+        @for (p of productos(); track p.id) {
+          <option [ngValue]="p.id">{{ p.nombre }} — ${{ p.precio }}</option>
+        }
+      </select>
+      <input type="number" [(ngModel)]="cantidadSeleccionada" min="1" />
+      <button type="button" (click)="agregarItem()">Agregar</button>
+    </div>
+
+    @if (items().length > 0) {
+      <ul class="lista-items">
+        @for (item of items(); track item.productoId; let i = $index) {
+          <li>
+            {{ item.cantidad }}x {{ item.nombreProducto }} — ${{ item.precioUnitario * item.cantidad }}
+            <button type="button" (click)="quitarItem(i)">Quitar</button>
+          </li>
+        }
+      </ul>
+      <p><strong>Total: ${{ total() }}</strong></p>
+    }
+
+    @if (error()) {
+      <p class="mensaje-error">{{ error() }}</p>
+    }
+
+    <div class="acciones-modal">
+      <button type="button" (click)="cerrar.emit()">Cancelar</button>
+      <button type="button" (click)="confirmar()" [disabled]="enviando()">
+        {{ enviando() ? 'Enviando…' : 'Confirmar pedido' }}
+      </button>
+    </div>
+  </div>
+</div>

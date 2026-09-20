@@ -14,19 +14,37 @@ export interface CrearVentaRequest {
   items: ItemVentaRequest[];
 }
 
+export interface ItemVenta {
+  id: number;
+  productoId: number;
+  nombreProducto: string;
+  cantidad: number;
+  precioUnitario: number;
+}
+
+export interface Venta {
+  id: number;
+  localId: number;
+  pedidoId?: number;
+  vendedorEmail: string;
+  total: number;
+  fechaVenta: string;
+  items: ItemVenta[];
+}
+
 @Injectable({ providedIn: 'root' })
 export class VentaService {
   private baseUrl = `${environment.apiBaseUrl}/api/ventas`;
 
   constructor(private http: HttpClient) {}
 
-  listar(localId?: number): Observable<any[]> {
+  listar(localId?: number): Observable<Venta[]> {
     let url = this.baseUrl;
     if (localId != null) url += `?localId=${localId}`;
-    return this.http.get<any[]>(url);
+    return this.http.get<Venta[]>(url);
   }
 
-  registrar(request: CrearVentaRequest): Observable<any> {
-    return this.http.post<any>(this.baseUrl, request);
+  registrar(request: CrearVentaRequest): Observable<Venta> {
+    return this.http.post<Venta>(this.baseUrl, request);
   }
 }
