@@ -9,7 +9,6 @@ import { Pedido } from '../../../services/pedido.service';
   styleUrl: './pedidos-tabla.css'
 })
 export class PedidosTabla {
-<<<<<<< HEAD
   readonly pedidos = input.required<Pedido[]>();
   readonly cargando = input<boolean>(false);
 
@@ -28,8 +27,4 @@ export class PedidosTabla {
     if (normalizado.includes('cancel') || normalizado.includes('rechaz')) return 'estado--alerta';
     return 'estado--neutro';
   }
-=======
-  pedidos = input.required<Pedido[]>();
-  cargando = input<boolean>(false);
->>>>>>> cb600e0 (Arreglo a tabla pedido.)
 }
