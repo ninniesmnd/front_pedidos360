@@ -1,4 +1,4 @@
-<div class="pedidos-lista">
+<div class="pedidos-lista" [class.pedidos-lista--acciones]="puedeActuar()">
   <div class="pedidos-lista__encabezado">
     <span>Pedido</span>
     <span>Cliente</span>
@@ -6,6 +6,9 @@
     <span>Picking</span>
     <span>Total</span>
     <span>Estado</span>
+    @if (puedeActuar()) {
+      <span>Acciones</span>
+    }
   </div>
 
   @if (cargando()) {
@@ -31,7 +34,7 @@
 
         <div class="pedidos-lista__celda pedidos-lista__entrega">
           <span class="pedidos-lista__etiqueta-movil">Entrega</span>
-          <p class="pedidos-lista__entrega-tipo">{{ p.tipoDespacho }}</p>
+          <p class="pedidos-lista__entrega-tipo">{{ p.tipoDespacho | sinGuiones }}</p>
           <p class="pedidos-lista__meta">Actualizado {{ p.fechaActualizacion | date: 'dd/MM/yyyy HH:mm' }}</p>
         </div>
 
@@ -48,8 +51,26 @@
 
         <div class="pedidos-lista__celda pedidos-lista__estado">
           <span class="pedidos-lista__etiqueta-movil">Estado</span>
-          <span class="pedidos-lista__badge" [class]="claseEstado(p.estado)">{{ p.estado }}</span>
+          <span class="pedidos-lista__badge" [class]="claseEstado(p.estado)">{{ p.estado | sinGuiones }}</span>
         </div>
+
+        @if (puedeActuar()) {
+          <div class="pedidos-lista__celda pedidos-lista__acciones">
+            <span class="pedidos-lista__etiqueta-movil">Acciones</span>
+            @for (accion of accionesDe(p); track accion.nuevoEstado) {
+              <button
+                type="button"
+                class="boton pedidos-lista__accion"
+                [class.boton--primario]="!accion.peligrosa"
+                [class.boton--secundario]="accion.peligrosa"
+                [disabled]="actualizandoId() === p.id"
+                (click)="ejecutar(p, accion)"
+              >{{ accion.etiqueta }}</button>
+            } @empty {
+              <span class="pedidos-lista__meta">—</span>
+            }
+          </div>
+        }
       </article>
     }
   }

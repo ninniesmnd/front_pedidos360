@@ -149,3 +149,27 @@
     margin-bottom: 0.15rem;
   }
 }
+
+/* --- Columna de acciones (solo roles operativos) --- */
+.pedidos-lista--acciones .pedidos-lista__encabezado,
+.pedidos-lista--acciones .pedidos-lista__fila {
+  grid-template-columns: 1.4fr 1.6fr 1.4fr 1fr 1fr 1fr 1.3fr;
+}
+
+.pedidos-lista__acciones {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.pedidos-lista__accion {
+  padding: 0.35rem 0.75rem;
+  font-size: var(--fs-xs);
+}
+
+@media (max-width: 960px) {
+  .pedidos-lista--acciones .pedidos-lista__fila {
+    grid-template-columns: 1fr;
+  }
+}

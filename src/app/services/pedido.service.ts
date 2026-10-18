@@ -35,6 +35,15 @@ export interface CrearPedidoRequest {
   items: ItemPedidoRequest[];
 }
 
+export type EstadoPedido = 
+| 'RECIBIDO'
+| 'EN_PREPARACION'
+| 'LISTO_PARA_DESPACHO'
+| 'EN_REPARTO'
+| 'ENTREGADO'
+| 'CANCELADO';
+
+
 @Injectable({ providedIn: 'root' })
 export class PedidoService {
   private baseUrl = `${environment.apiBaseUrl}/api/pedidos`;
@@ -61,5 +70,9 @@ export class PedidoService {
 
   crearPedido(request: CrearPedidoRequest): Observable<Pedido> {
     return this.http.post<Pedido>(this.baseUrl, request);
+  }
+
+  cambiarEstado(id: number, nuevoEstado: EstadoPedido): Observable<Pedido> {
+    return this.http.patch<Pedido>(`${this.baseUrl}/${id}/estado`, { nuevoEstado });
   }
 }

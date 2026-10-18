@@ -4,15 +4,16 @@ import { VentaService, Venta } from '../../services/venta.service';
 import { ProductoService, Producto } from '../../services/producto.service';
 import { AuthService } from '../../core/auth/auth.service';
 import { AppRole } from '../../core/auth/roles';
-import { PedidosTabla } from '../../shared/components/pedido-tabla/pedidos-tabla';
+import { PedidosTabla, CambioEstado } from '../../shared/components/pedido-tabla/pedidos-tabla';
 import { NuevoPedido } from './components/nuevo-pedido/nuevo-pedido';
 import { VentasTabla } from './components/venta-tabla/venta-tabla';
 import { ProductosTabla } from './components/productos-tabla/productos-tabla';
 import { NuevoProducto } from './components/nuevo-producto/nuevo-producto';
+import { SinGuionesPipe } from '../../shared/pipes/sin-guiones.pipe';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [PedidosTabla, NuevoPedido, VentasTabla, ProductosTabla, NuevoProducto],
+  imports: [PedidosTabla, NuevoPedido, VentasTabla, ProductosTabla, NuevoProducto, SinGuionesPipe],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })
@@ -25,6 +26,8 @@ export class Dashboard implements OnInit {
   protected readonly pedidos = signal<Pedido[]>([]);
   protected readonly cargando = signal(false);
   protected readonly error = signal<string | null>(null);
+  protected readonly actualizandoId = signal<number | null>(null);
+  protected readonly errorAccion = signal<string | null>(null);
 
   protected readonly busqueda = signal('');
   protected readonly estadoSeleccionado = signal('todos');
@@ -122,6 +125,22 @@ export class Dashboard implements OnInit {
         this.cargandoVentas.set(false);
       },
       error: () => this.cargandoVentas.set(false)
+    });
+  }
+
+    protected onCambiarEstado(cambio: CambioEstado): void {
+    this.actualizandoId.set(cambio.pedido.id);
+    this.errorAccion.set(null);
+
+    this.pedidoService.cambiarEstado(cambio.pedido.id, cambio.nuevoEstado).subscribe({
+      next: () => {
+        this.actualizandoId.set(null);
+        this.cargarPedidos();
+      },
+      error: (err) => {
+        this.actualizandoId.set(null);
+        this.errorAccion.set(`No se pudo cambiar el estado (error ${err.status}).`);
+      }
     });
   }
 

@@ -44,7 +44,7 @@
           (change)="actualizarEstado($any($event.target).value)"
         >
           @for (estado of estadosDisponibles(); track estado) {
-            <option [value]="estado">{{ estado === 'todos' ? 'Todos los estados' : estado }}</option>
+            <option [value]="estado">{{ estado === 'todos' ? 'Todos los estados' : (estado | sinGuiones) }}</option>
           }
         </select>
       </div>
@@ -53,7 +53,16 @@
     @if (error()) {
       <p class="pedidos-panel__error">{{ error() }}</p>
     } @else {
-      <app-pedidos-tabla [pedidos]="pedidosPagina()" [cargando]="cargando()" />
+      @if (errorAccion()) {
+        <p class="pedidos-panel__error">{{ errorAccion() }}</p>
+      }
+
+      <app-pedidos-tabla
+        [pedidos]="pedidosPagina()"
+        [cargando]="cargando()"
+        [actualizandoId]="actualizandoId()"
+        (cambiarEstado)="onCambiarEstado($event)"
+      />
 
       <footer class="pedidos-panel__pie">
         <p class="pedidos-panel__resultados">{{ pedidosFiltrados().length }} resultados</p>
