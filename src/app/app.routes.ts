@@ -6,6 +6,8 @@ import { SobreNosotrosPagina } from './pages/sobre-nosotros/sobre-nosotros';
 import { ProductosPagina } from './pages/productos/productos';
 import { MsalGuard } from '@azure/msal-angular';
 import { rolesLoadedGuard } from './core/auth/roles-loaded.guard';
+import { PanelOperaciones } from './pages/panel-operaciones/panel-operaciones'; 
+
 
 export const routes: Routes = [
   {
@@ -35,6 +37,12 @@ export const routes: Routes = [
     path: 'dashboard',
     component: Dashboard,
     title: 'Pedidos 360 | Panel',
+    canActivate: [MsalGuard, rolesLoadedGuard]
+  },
+  {
+    path: 'panel-operaciones',
+    component: PanelOperaciones,
+    title: 'Pedidos 360 | Panel de operaciones',
     canActivate: [MsalGuard, rolesLoadedGuard]
   }
 ];

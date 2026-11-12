@@ -1,0 +1,232 @@
+<section class="panel">
+  <header class="panel__encabezado">
+    <div>
+      <h1 class="panel__titulo">Panel de operaciones</h1>
+      <p class="panel__subtitulo">
+        @if (localActivo() !== null) { Local {{ localActivo() }} } @else { Todos los locales }
+        @if (ultimaActualizacion()) {
+          · Actualizado {{ ultimaActualizacion() | date: 'HH:mm:ss' }}
+        }
+      </p>
+    </div>
+
+    <div class="panel__controles">
+      <span class="chip" [class.chip--ok]="eventos().length > 0">
+        <span class="chip__punto"></span>
+        Streaming: {{ eventos().length }} eventos
+      </span>
+
+      @if (esAdminGeneral()) {
+        <label class="campo">
+          <span class="campo__etiqueta">Local</span>
+          <select class="campo__control" (change)="cambiarLocal($any($event.target).value)">
+            <option value="">Todos</option>
+            @for (id of localesDisponibles(); track id) {
+              <option [value]="id">Local {{ id }}</option>
+            }
+          </select>
+        </label>
+      }
+
+      <label class="campo">
+        <span class="campo__etiqueta">Periodo</span>
+        <select class="campo__control" [value]="periodo()" (change)="cambiarPeriodo($any($event.target).value)">
+          <option value="hoy">Hoy</option>
+          <option value="semana">Últimos 7 días</option>
+          <option value="todo">Histórico</option>
+        </select>
+      </label>
+
+      <label class="interruptor">
+        <input type="checkbox" [checked]="autoRefresh()"
+               (change)="autoRefresh.set($any($event.target).checked)" />
+        Auto-actualizar
+      </label>
+
+      <button type="button" class="boton boton--secundario" (click)="cargar()" [disabled]="cargando()">
+        {{ cargando() ? 'Actualizando…' : 'Actualizar' }}
+      </button>
+    </div>
+  </header>
+
+  @if (errores().length) {
+    <p class="aviso">No se pudo cargar: {{ errores().join(', ') }}. Se muestran los últimos datos disponibles.</p>
+  }
+
+  <!-- KPIs -->
+  <div class="kpis">
+    <article class="kpi">
+      <span class="kpi__etiqueta">Ventas {{ etiquetaPeriodo() }}</span>
+      <strong class="kpi__valor">$ {{ totalVentas() | number: '1.0-0' }}</strong>
+      @if (variacion() !== null) {
+        <span class="kpi__detalle" [class.kpi__detalle--sube]="variacion()! >= 0"
+              [class.kpi__detalle--baja]="variacion()! < 0">
+          {{ variacion()! >= 0 ? '▲' : '▼' }} {{ variacionAbs() | number: '1.0-0' }}% vs {{ etiquetaAnterior() }}
+        </span>
+      } @else {
+        <span class="kpi__detalle">{{ cantidadVentas() }} ventas</span>
+      }
+    </article>
+
+    <article class="kpi">
+      <span class="kpi__etiqueta">Pedidos activos</span>
+      <strong class="kpi__valor">{{ pedidosActivos().length }}</strong>
+      <span class="kpi__detalle">{{ enPreparacion() }} en preparación · {{ enReparto() }} en reparto</span>
+    </article>
+
+    <article class="kpi" [class.kpi--alerta]="stockBajo().length > 0">
+      <span class="kpi__etiqueta">Alertas de stock</span>
+      <strong class="kpi__valor">{{ stockBajo().length }}</strong>
+      <span class="kpi__detalle">Productos con {{ umbral }} unidades o menos</span>
+    </article>
+
+    @if (localActivo() === null) {
+      <article class="kpi">
+        <span class="kpi__etiqueta">Local destacado</span>
+        <strong class="kpi__valor kpi__valor--texto">{{ localDestacado()?.etiqueta ?? '—' }}</strong>
+        <span class="kpi__detalle">
+          @if (localDestacado()) { $ {{ localDestacado()!.valor | number: '1.0-0' }} } @else { Sin ventas }
+        </span>
+      </article>
+    } @else {
+      <article class="kpi">
+        <span class="kpi__etiqueta">Ticket promedio</span>
+        <strong class="kpi__valor">$ {{ ticketPromedio() | number: '1.0-0' }}</strong>
+        <span class="kpi__detalle">{{ cantidadVentas() }} ventas</span>
+      </article>
+    }
+  </div>
+
+  <!-- Tendencia + estados -->
+  <div class="fila fila--2-1">
+    <article class="tarjeta">
+      <h2 class="tarjeta__titulo">
+        Tendencia de ventas
+        <small>{{ periodo() === 'hoy' ? 'por hora' : 'por día' }}</small>
+      </h2>
+      @if (totalVentas() === 0) {
+        <p class="vacio">Sin ventas en este periodo.</p>
+      } @else {
+        <div class="columnas" role="img" aria-label="Gráfico de ventas">
+          @for (b of tendencia(); track $index) {
+            <div class="columna" [title]="b.etiqueta + ': $ ' + (b.valor | number: '1.0-0')">
+              <div class="columna__barra" [style.height.%]="b.pct"></div>
+              <span class="columna__etiqueta">
+                @if (periodo() !== 'hoy' || $index % 3 === 0) { {{ b.etiqueta }} }
+              </span>
+            </div>
+          }
+        </div>
+      }
+    </article>
+
+    <article class="tarjeta">
+      <h2 class="tarjeta__titulo">Pedidos por estado</h2>
+      <ul class="barras">
+        @for (b of pedidosPorEstado(); track b.etiqueta) {
+          <li class="barras__fila">
+            <span class="barras__etiqueta">{{ b.etiqueta | sinGuiones }}</span>
+            <span class="barras__pista"><span class="barras__relleno" [style.width.%]="b.pct"></span></span>
+            <span class="barras__valor">{{ b.valor }}</span>
+          </li>
+        }
+      </ul>
+    </article>
+  </div>
+
+  <!-- Top productos + stock -->
+  <div class="fila fila--1-1">
+    <article class="tarjeta">
+      <h2 class="tarjeta__titulo">Productos más vendidos <small>unidades</small></h2>
+      @if (topProductos().length === 0) {
+        <p class="vacio">Sin ventas en este periodo.</p>
+      } @else {
+        <ul class="barras">
+          @for (b of topProductos(); track b.etiqueta) {
+            <li class="barras__fila">
+              <span class="barras__etiqueta">{{ b.etiqueta }}</span>
+              <span class="barras__pista"><span class="barras__relleno" [style.width.%]="b.pct"></span></span>
+              <span class="barras__valor">{{ b.valor }}</span>
+            </li>
+          }
+        </ul>
+      }
+    </article>
+
+    <article class="tarjeta">
+      <h2 class="tarjeta__titulo">Stock bajo</h2>
+      @if (stockBajo().length === 0) {
+        <p class="vacio">Todo el inventario está sobre el mínimo.</p>
+      } @else {
+        <table class="tabla">
+          <thead>
+            <tr><th>Producto</th>@if (localActivo() === null) { <th>Local</th> }<th>Stock</th><th>Estado</th></tr>
+          </thead>
+          <tbody>
+            @for (p of stockBajo(); track p.id) {
+              <tr>
+                <td>{{ p.nombre }}</td>
+                @if (localActivo() === null) { <td>{{ p.localId }}</td> }
+                <td>{{ p.stock }}</td>
+                <td>
+                  <span class="etiqueta" [class.etiqueta--critico]="p.stock === 0">
+                    {{ p.stock === 0 ? 'Agotado' : 'Bajo' }}
+                  </span>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    </article>
+  </div>
+
+  <!-- Ventas por local (solo AdminGeneral con más de un local) -->
+  @if (esAdminGeneral() && localActivo() === null && ventasPorLocal().length > 1) {
+    <article class="tarjeta">
+      <h2 class="tarjeta__titulo">Ventas por local <small>{{ etiquetaPeriodo() }}</small></h2>
+      <ul class="barras">
+        @for (b of ventasPorLocal(); track b.etiqueta) {
+          <li class="barras__fila">
+            <span class="barras__etiqueta">{{ b.etiqueta }}</span>
+            <span class="barras__pista"><span class="barras__relleno" [style.width.%]="b.pct"></span></span>
+            <span class="barras__valor barras__valor--ancho">$ {{ b.valor | number: '1.0-0' }}</span>
+          </li>
+        }
+      </ul>
+    </article>
+  }
+
+  <!-- Feed de Kafka Streams -->
+  <article class="tarjeta">
+    <h2 class="tarjeta__titulo">
+      Eventos en vivo
+      <small>Kafka Streams · ventana de 60 s</small>
+    </h2>
+    @if (feed().length === 0) {
+      <p class="vacio">Aún no llegan resultados de streaming. Registra una venta o cambia el estado de un pedido.</p>
+    } @else {
+      <ul class="feed">
+        @for (e of feed(); track $index) {
+          <li class="feed__linea" [class.feed__linea--alerta]="e.tipo === 'STOCK_BAJO'">
+            <time class="feed__hora">{{ e.generadoEn | date: 'HH:mm:ss' }}</time>
+            @switch (e.tipo) {
+              @case ('VENTAS_TOTAL') {
+                <span>Local {{ e.localId }}: ventas de la ventana $ {{ e.valor | number: '1.0-0' }}</span>
+              }
+              @case ('PEDIDOS_POR_ESTADO') {
+                <span>Local {{ e.localId }}: {{ e.valor }} pedido(s) con estado «{{ e.clave | sinGuiones }}»</span>
+              }
+              @case ('STOCK_BAJO') {
+                <span>Stock bajo en Local {{ e.localId }}: {{ e.clave }} ({{ e.valor }} uds)</span>
+              }
+              @default {
+                <span>{{ e.tipo }} · Local {{ e.localId }} · {{ e.clave }}</span>
+              }
+            }
+          </li>
+        }
+      </ul>
+    }
+  </article>
+</section>
