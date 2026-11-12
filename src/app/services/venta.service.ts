@@ -34,7 +34,7 @@ export interface Venta {
 
 @Injectable({ providedIn: 'root' })
 export class VentaService {
-  private baseUrl = `${environment.apiBaseUrl}/api/ventas`;
+  private baseUrl = `${environment.ventasApiBaseUrl}/api/ventas`;
 
   constructor(private http: HttpClient) {}
 

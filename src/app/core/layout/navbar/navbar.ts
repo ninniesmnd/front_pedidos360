@@ -1,4 +1,6 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
+import { AuthService } from '../../auth/auth.service';
+import { AppRole } from '../../auth/roles';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
@@ -16,6 +18,11 @@ export class Navbar {
   private readonly msalBroadcastService = inject(MsalBroadcastService);
 
   protected readonly menuAbierto = signal(false);
+
+  private readonly auth = inject(AuthService);
+  protected readonly esAdmin = computed(() =>
+    this.auth.hasAnyRole([AppRole.AdminLocal, AppRole.AdminGeneral])
+  );
 
   protected readonly estaAutenticado = toSignal(
     this.msalBroadcastService.inProgress$.pipe(
